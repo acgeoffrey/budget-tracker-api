@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Record = require('../models/recordSchema');
 const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/apiFeatures');
@@ -25,7 +26,7 @@ exports.createRecord = catchAsync(async (req, res, next) => {
   const newRecord = await Record.create({
     ...req.body,
     category: req.body.category.toLowerCase(),
-    date: Date.now(),
+    date: req.body.date ? req.body.date : Date.now(),
     user: req.user.id,
   });
 
@@ -43,3 +44,41 @@ exports.deleteRecord = (req, res, next) => {
     message: 'Controller yet to be build',
   });
 };
+
+exports.getCategories = catchAsync(async (req, res, next) => {
+  const { startDate, endDate } = req.body;
+
+  const match = {
+    recordType: { $eq: 'expense' },
+  };
+  if (startDate && endDate) {
+    match.date = {
+      $gte: new Date(startDate),
+      $lte: new Date(endDate),
+    };
+  }
+  // console.log(match);
+
+  const categoryStats = await Record.aggregate([
+    {
+      $match: { user: new mongoose.Types.ObjectId(req.user.id) },
+    },
+    {
+      $match: match,
+    },
+    {
+      $group: {
+        _id: { $toUpper: '$category' },
+        numRecords: { $sum: 1 },
+        totalAmount: { $sum: '$amount' },
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      categoryStats,
+    },
+  });
+});

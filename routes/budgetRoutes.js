@@ -10,6 +10,10 @@ router
   .post(authController.protect, budgetController.createRecord);
 
 router
+  .route('/category')
+  .get(authController.protect, budgetController.getCategories);
+
+router
   .route('/record/:id')
   .delete(authController.protect, budgetController.deleteRecord);
 
