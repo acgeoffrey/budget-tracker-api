@@ -11,7 +11,7 @@ app.use(express.json({ limit: '10kb' }));
 
 // Routes
 app.use('/api/v1/budget', budgetRouter);
-app.use('api/v1/user', userRouter);
+app.use('/api/v1/user', userRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on server!`, 404));
