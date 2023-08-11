@@ -38,6 +38,12 @@ const userSchema = new mongoose.Schema(
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
+    currency: {
+      type: String,
+      default: 'INR',
+      unique: true,
+      trim: true,
+    },
   },
   {
     timestamps: true,

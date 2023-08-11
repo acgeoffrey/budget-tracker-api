@@ -1,13 +1,16 @@
 const express = require('express');
 const budgetController = require('../controllers/budgetController');
+const authController = require('../controllers/authController');
 
 const router = express.Router({ mergeParams: true });
 
 router
-  .route('/expense')
-  .get(budgetController.getAllExpenses)
-  .post(budgetController.createExpense);
+  .route('/record')
+  .get(authController.protect, budgetController.getAllRecords)
+  .post(authController.protect, budgetController.createRecord);
 
-router.route('/expense/:id').delete(budgetController.deleteExpense);
+router
+  .route('/record/:id')
+  .delete(authController.protect, budgetController.deleteRecord);
 
 module.exports = router;
