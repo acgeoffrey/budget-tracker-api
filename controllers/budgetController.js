@@ -10,7 +10,8 @@ exports.getAllRecords = catchAsync(async (req, res, next) => {
     .filter()
     .sort()
     .limitFields()
-    .paginate();
+    .paginate()
+    .search();
 
   const records = await apiFeatures.query;
 
@@ -86,6 +87,9 @@ exports.getCategories = catchAsync(async (req, res, next) => {
         numRecords: { $sum: 1 },
         totalAmount: { $sum: '$amount' },
       },
+    },
+    {
+      $sort: { totalAmount: 1 },
     },
   ]);
 

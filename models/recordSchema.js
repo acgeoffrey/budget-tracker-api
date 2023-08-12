@@ -6,6 +6,7 @@ const recordSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Title is required'],
       trim: true,
+      index: true,
     },
     recordType: {
       type: String,
@@ -39,5 +40,7 @@ const recordSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+recordSchema.index({ title: 'text' });
 
 module.exports = mongoose.model('Record', recordSchema);
