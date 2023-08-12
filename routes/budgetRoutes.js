@@ -15,6 +15,7 @@ router
 
 router
   .route('/record/:id')
+  .get(authController.protect, budgetController.getRecord)
   .delete(authController.protect, budgetController.deleteRecord);
 
 module.exports = router;

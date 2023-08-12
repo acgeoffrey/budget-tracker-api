@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Record = require('../models/recordSchema');
 const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/apiFeatures');
+const AppError = require('../utils/AppError');
 
 exports.getAllRecords = catchAsync(async (req, res, next) => {
   // Query
@@ -18,6 +19,19 @@ exports.getAllRecords = catchAsync(async (req, res, next) => {
     results: records.length,
     data: {
       records,
+    },
+  });
+});
+
+exports.getRecord = catchAsync(async (req, res, next) => {
+  const record = await Record.findById(req.params.id);
+
+  if (!record) return next(new AppError('No Record found.', 404));
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      record,
     },
   });
 });
