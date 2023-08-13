@@ -41,7 +41,6 @@ const userSchema = new mongoose.Schema(
     currency: {
       type: String,
       default: 'INR',
-      unique: true,
       trim: true,
     },
   },
