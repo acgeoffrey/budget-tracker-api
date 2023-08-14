@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Record = require('../models/recordSchema');
+const Record = require('../models/recordModel');
 const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/AppError');
