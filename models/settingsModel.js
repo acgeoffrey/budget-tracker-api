@@ -35,6 +35,10 @@ const settingsSchmea = new mongoose.Schema({
       'other',
     ],
   },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+  },
 });
 
 module.exports = mongoose.model('Settings', settingsSchmea);

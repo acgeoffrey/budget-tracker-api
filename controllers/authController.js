@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const Settings = require('../models/settingsModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const sendEmail = require('../utils/email');
@@ -39,12 +40,14 @@ const createSendToken = (user, statusCode, res) => {
 exports.signup = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
 
-  await User.create({
+  const newUser = await User.create({
     name,
     email,
     password,
     passwordConfirm,
   });
+
+  await Settings.create({ user: newUser._id });
 
   res.status(201).json({
     status: 'success',
