@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Record = require('../models/recordModel');
+const Budget = require('../models/budgetModel');
 const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/AppError');
@@ -97,6 +98,31 @@ exports.getCategories = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       categoryStats,
+    },
+  });
+});
+
+exports.getAllBudgets = catchAsync(async (req, res, next) => {
+  const budgets = await Budget.find({ user: req.user.id });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      budgets,
+    },
+  });
+});
+
+exports.createBudget = catchAsync(async (req, res, next) => {
+  const newBudget = await Budget.create({
+    ...req.body,
+    user: req.user.id,
+  });
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      budget: newBudget,
     },
   });
 });

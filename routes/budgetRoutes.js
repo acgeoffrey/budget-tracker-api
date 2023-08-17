@@ -10,12 +10,17 @@ router
   .post(authController.protect, budgetController.createRecord);
 
 router
+  .route('/record/:id')
+  .get(authController.protect, budgetController.getRecord)
+  .delete(authController.protect, budgetController.deleteRecord);
+
+router
   .route('/category')
   .get(authController.protect, budgetController.getCategories);
 
 router
-  .route('/record/:id')
-  .get(authController.protect, budgetController.getRecord)
-  .delete(authController.protect, budgetController.deleteRecord);
+  .route('/planner')
+  .get(authController.protect, budgetController.getAllBudgets)
+  .post(authController.protect, budgetController.createBudget);
 
 module.exports = router;
