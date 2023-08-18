@@ -12,6 +12,7 @@ router
 router
   .route('/record/:id')
   .get(authController.protect, budgetController.getRecord)
+  .patch(authController.protect, budgetController.updateRecord)
   .delete(authController.protect, budgetController.deleteRecord);
 
 router

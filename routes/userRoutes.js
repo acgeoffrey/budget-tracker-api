@@ -18,11 +18,10 @@ router.patch(
 
 router.use('/:userId/budget', budgetRouter);
 
-router.route('/').post(userController.createUser);
-
 router
-  .route('/:id')
-  .get(userController.getUser)
+  .route('/')
+  .post(userController.createUser)
+  .get(authController.protect, userController.getMe)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 

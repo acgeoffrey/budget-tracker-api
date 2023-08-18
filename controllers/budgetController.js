@@ -54,6 +54,28 @@ exports.createRecord = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.updateRecord = catchAsync(async (req, res, next) => {
+  const record = await Record.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  }).populate({
+    path: 'user',
+    select: '_id',
+  });
+
+  if (req.user.id !== record.user.id)
+    return next(
+      new AppError('You are not authorized to perform this action', 401),
+    );
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      record,
+    },
+  });
+});
+
 exports.deleteRecord = (req, res, next) => {
   res.status(500).json({
     status: 'error',
