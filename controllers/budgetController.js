@@ -63,6 +63,8 @@ exports.updateRecord = catchAsync(async (req, res, next) => {
     select: '_id',
   });
 
+  if (!record) return next(new AppError('No Record found with the ID', 404));
+
   if (req.user.id !== record.user.id)
     return next(
       new AppError('You are not authorized to perform this action', 401),
@@ -76,12 +78,26 @@ exports.updateRecord = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteRecord = (req, res, next) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'Controller yet to be build',
+exports.deleteRecord = catchAsync(async (req, res, next) => {
+  const record = await Record.findById(req.params.id).populate({
+    path: 'user',
+    select: '_id',
   });
-};
+
+  if (!record) return next(new AppError('No Record found with the ID', 404));
+
+  if (req.user.id !== record.user.id)
+    return next(
+      new AppError('You are not authorized to perform this action', 401),
+    );
+
+  record.deleteOne();
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
 
 exports.getCategories = catchAsync(async (req, res, next) => {
   const { startDate, endDate } = req.body;
