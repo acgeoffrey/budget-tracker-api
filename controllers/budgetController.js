@@ -126,3 +126,42 @@ exports.createBudget = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.getBudget = catchAsync(async (req, res, next) => {
+  const budget = await Budget.findById(req.params.id);
+
+  const match = {
+    recordType: { $eq: 'expense' },
+    date: {
+      $gte: budget.startDate,
+      $lte: budget.endDate,
+    },
+  };
+
+  const categoryStats = await Record.aggregate([
+    {
+      $match: { user: new mongoose.Types.ObjectId(req.user.id) },
+    },
+    {
+      $match: match,
+    },
+    {
+      $group: {
+        _id: { $toUpper: '$category' },
+        numRecords: { $sum: 1 },
+        totalAmount: { $sum: '$amount' },
+      },
+    },
+    {
+      $sort: { totalAmount: 1 },
+    },
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      budget,
+      categoryStats,
+    },
+  });
+});

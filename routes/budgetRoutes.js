@@ -23,4 +23,8 @@ router
   .get(authController.protect, budgetController.getAllBudgets)
   .post(authController.protect, budgetController.createBudget);
 
+router
+  .route('/planner/:id')
+  .get(authController.protect, budgetController.getBudget);
+
 module.exports = router;
