@@ -34,7 +34,17 @@ const budgetSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 );
+
+budgetSchema.virtual('startDateFormat').get(function () {
+  if (this.startDate) return new Date(this.startDate).toLocaleDateString();
+});
+
+budgetSchema.virtual('endDateFormat').get(function () {
+  if (this.endDate) return new Date(this.endDate).toLocaleDateString();
+});
 
 module.exports = mongoose.model('Budget', budgetSchema);
