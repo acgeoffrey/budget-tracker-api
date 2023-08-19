@@ -49,10 +49,7 @@ app.use(
 
 // Routes
 app.get('/', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'Welcome to CoinChef | Budget Tracking Application API ',
-  });
+  res.sendStatus(200);
 });
 app.use('/api/v1/budget', budgetRouter);
 app.use('/api/v1/user', userRouter);
