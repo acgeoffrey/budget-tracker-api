@@ -14,7 +14,7 @@ exports.getAllRecords = catchAsync(async (req, res, next) => {
     .paginate()
     .search();
 
-  const records = await apiFeatures.query;
+  const records = await apiFeatures.query.explain();
 
   res.status(200).json({
     status: 'success',

@@ -38,9 +38,13 @@ const recordSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 );
 
+// Indexing the fields that will be queried often
 recordSchema.index({ title: 'text' });
+recordSchema.index({ amount: 1, date: 1 });
 
 module.exports = mongoose.model('Record', recordSchema);

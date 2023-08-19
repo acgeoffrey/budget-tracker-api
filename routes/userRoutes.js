@@ -1,7 +1,6 @@
 const express = require('express');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
-const budgetRouter = require('./budgetRoutes');
 
 const router = express.Router();
 
@@ -10,18 +9,15 @@ router.post('/login', authController.login);
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 
-router.patch(
-  '/updatePassword',
-  authController.protect,
-  authController.updatePassword,
-);
+// Protect all the below routes with this authentication middleware
+router.use(authController.protect);
 
-router.use('/:userId/budget', budgetRouter);
+router.patch('/updatePassword', authController.updatePassword);
 
 router
   .route('/')
-  .get(authController.protect, userController.getMe)
-  .patch(userController.updateUser)
-  .delete(authController.protect, userController.deleteUser);
+  .get(userController.getMe)
+  .patch(userController.updateMe)
+  .delete(userController.deleteMe);
 
 module.exports = router;
