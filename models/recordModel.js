@@ -47,4 +47,8 @@ const recordSchema = new mongoose.Schema(
 recordSchema.index({ title: 'text' });
 recordSchema.index({ amount: 1, date: 1 });
 
+recordSchema.virtual('dateFormat').get(function () {
+  if (this.date) return new Date(this.date).toLocaleDateString();
+});
+
 module.exports = mongoose.model('Record', recordSchema);
