@@ -40,6 +40,9 @@ app.use(mongoSanitize());
 // Data sanitization against XSS (Cross site scripting attacks)
 app.use(xss());
 
+// Prevent parameter pollution
+app.use(hpp());
+
 // Routes
 app.use('/api/v1/budget', budgetRouter);
 app.use('/api/v1/user', userRouter);
