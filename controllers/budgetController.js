@@ -41,7 +41,7 @@ exports.getRecord = catchAsync(async (req, res, next) => {
 exports.createRecord = catchAsync(async (req, res, next) => {
   const newRecord = await Record.create({
     ...req.body,
-    category: req.body.category.toLowerCase(),
+    category: req.body.category,
     date: req.body.date ? req.body.date : Date.now(),
     user: req.user.id,
   });
@@ -100,6 +100,8 @@ exports.deleteRecord = catchAsync(async (req, res, next) => {
 
 exports.getCategories = catchAsync(async (req, res, next) => {
   const { startDate, endDate } = req.body;
+  const endDateISO = new Date(endDate);
+  endDateISO.setDate(endDateISO.getDate() + Number(1));
 
   const match = {
     recordType: { $eq: 'expense' },
@@ -107,9 +109,10 @@ exports.getCategories = catchAsync(async (req, res, next) => {
   if (startDate && endDate) {
     match.date = {
       $gte: new Date(startDate),
-      $lte: new Date(endDate),
+      $lte: new Date(endDateISO),
     };
   }
+
   // console.log(match);
 
   const categoryStats = await Record.aggregate([
