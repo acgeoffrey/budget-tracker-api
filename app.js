@@ -41,7 +41,11 @@ app.use(mongoSanitize());
 app.use(xss());
 
 // Prevent parameter pollution
-app.use(hpp());
+app.use(
+  hpp({
+    whitelist: ['amount'],
+  }),
+);
 
 // Routes
 app.use('/api/v1/budget', budgetRouter);
