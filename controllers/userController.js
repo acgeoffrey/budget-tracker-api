@@ -57,16 +57,19 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 exports.updateUserSettings = catchAsync(async (req, res, next) => {
   const settings = await Settings.findOne({ user: req.user.id });
 
-  settings.currency = req.body.currency ? req.body.currency : settings.currency;
+  if (req.body.currency) settings.currency = req.body.currency;
 
-  console.log(req.body);
+  if (req.body.expenseCategories)
+    settings.expenseCategories = [
+      ...settings.expenseCategories,
+      req.body.expenseCategories,
+    ];
 
-  settings.expenseCategories = req.body.expenseCategories
-    ? [...settings.expenseCategories, req.body.expenseCategories]
-    : settings.expenseCategories;
-  settings.incomeCategories = req.body.incomeCategories
-    ? [...settings.incomeCategories, req.body.incomeCategories]
-    : settings.incomeCategories;
+  if (req.body.incomeCategories)
+    settings.incomeCategories = [
+      ...settings.incomeCategories,
+      req.body.incomeCategories,
+    ];
 
   await settings.save();
 
