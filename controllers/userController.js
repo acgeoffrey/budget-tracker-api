@@ -19,16 +19,18 @@ exports.getMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.updateUser = (req, res, next) => {
+exports.updateUser = catchAsync(async (req, res, next) => {
   res.status(500).json({
     status: 'error',
     message: 'Controller yet to be build',
   });
-};
+});
 
-exports.deleteUser = (req, res, next) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'Controller yet to be build',
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  await User.findByIdAndDelete(req.user.id);
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
   });
-};
+});
