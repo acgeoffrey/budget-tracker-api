@@ -49,9 +49,9 @@ app.use(
 
 // Routes
 app.get('/', (req, res) => {
-  res.status(204).json({
+  res.status(200).json({
     status: 'success',
-    data: null,
+    message: 'Welcome to CoinChef - Budget Tracking Application API',
   });
 });
 app.use('/api/v1/budget', budgetRouter);
