@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const settingsSchmea = new mongoose.Schema({
+const settingsSchema = new mongoose.Schema({
   currency: {
     type: String,
     default: 'INR',
@@ -41,4 +41,4 @@ const settingsSchmea = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Settings', settingsSchmea);
+module.exports = mongoose.model('Settings', settingsSchema);

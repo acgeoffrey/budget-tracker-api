@@ -20,4 +20,6 @@ router
   .patch(userController.updateMe)
   .delete(userController.deleteMe);
 
+router.route('/settings').patch();
+
 module.exports = router;
