@@ -4,28 +4,30 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
+router.use(authController.protect);
+
 router
   .route('/record')
-  .get(authController.protect, budgetController.getAllRecords)
-  .post(authController.protect, budgetController.createRecord);
+  .get(budgetController.getAllRecords)
+  .post(budgetController.createRecord);
 
 router
   .route('/record/:id')
-  .get(authController.protect, budgetController.getRecord)
-  .patch(authController.protect, budgetController.updateRecord)
-  .delete(authController.protect, budgetController.deleteRecord);
+  .get(budgetController.getRecord)
+  .patch(budgetController.updateRecord)
+  .delete(budgetController.deleteRecord);
 
-router
-  .route('/category')
-  .get(authController.protect, budgetController.getCategories);
+router.route('/category').get(budgetController.getCategories);
 
 router
   .route('/planner')
-  .get(authController.protect, budgetController.getAllBudgets)
-  .post(authController.protect, budgetController.createBudget);
+  .get(budgetController.getAllBudgets)
+  .post(budgetController.createBudget);
 
 router
   .route('/planner/:id')
-  .get(authController.protect, budgetController.getBudget);
+  .get(budgetController.getBudget)
+  .patch(budgetController.updateBudget)
+  .delete(budgetController.deleteBudget);
 
 module.exports = router;

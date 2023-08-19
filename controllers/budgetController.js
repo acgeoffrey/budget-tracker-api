@@ -167,6 +167,8 @@ exports.createBudget = catchAsync(async (req, res, next) => {
 exports.getBudget = catchAsync(async (req, res, next) => {
   const budget = await Budget.findById(req.params.id);
 
+  if (!budget) return next(new AppError('No Budget found with this ID.', 404));
+
   const match = {
     recordType: { $eq: 'expense' },
     date: {
@@ -200,5 +202,19 @@ exports.getBudget = catchAsync(async (req, res, next) => {
       budget,
       categoryStats,
     },
+  });
+});
+
+exports.updateBudget = catchAsync(async (req, res, next) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This controller yet to be built',
+  });
+});
+
+exports.deleteBudget = catchAsync(async (req, res, next) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This controller yet to be built',
   });
 });
