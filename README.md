@@ -5,6 +5,7 @@
 - [Links](#links)
 - [Overview](#overview)
 - [Features](#features)
+- [Features To Implement](#features-to-implement)
 - [Built with](#built-with)
 - [To run the app on Local Server](#to-run-the-app-on-local-server)
 - [Author](#author)
@@ -27,6 +28,12 @@
 - Expense categories can be compared with the Budget planned and expense done on those categories on specified date.
 - This API can be used to develop Frontend for a budget tracker application.
 
+### Features To Implement
+
+- Update and delete Budget planning.
+- Add Subscription tracking.
+- Add Google OAuth.
+
 ## Built with
 
 - NodeJS
@@ -39,8 +46,7 @@
 - Install all needed npm dependencies with `npm install`.
 - Save the following environmental variables in a config.env file.
 
-  - NODE_ENV(development or productoin)
-  - PORT
+  - NODE_ENV(`development`)
   - DATABASE (MongoDB)
   - DATABASE_PASSWORD
   - JWT_SECRET
