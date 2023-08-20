@@ -31,10 +31,7 @@
 
 - NodeJS
 - Express
-- EJS
 - MongoDB
-- Mongoose
-- SCSS/SASS
 
 ## To run the app on Local Server
 
