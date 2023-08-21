@@ -20,6 +20,7 @@ const budgetSchema = new mongoose.Schema(
         title: {
           type: String,
           required: [true, 'Title for tag is required'],
+          lowercase: true,
         },
         amount: {
           type: Number,

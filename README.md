@@ -30,7 +30,7 @@
 
 ### Features To Implement
 
-- Update and delete Budget planning.
+- Update Budget planning.
 - Add Subscription tracking.
 - Add Google OAuth.
 

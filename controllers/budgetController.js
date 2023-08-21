@@ -147,6 +147,7 @@ exports.getAllBudgets = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
+    results: budgets.length,
     data: {
       budgets,
     },
@@ -216,8 +217,22 @@ exports.updateBudget = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteBudget = catchAsync(async (req, res, next) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This controller yet to be built',
+  const budget = await Budget.findById(req.params.id).populate({
+    path: 'user',
+    select: '_id',
+  });
+
+  if (!budget) return next(new AppError('No Budget found with the ID', 404));
+
+  if (req.user.id !== budget.user.id)
+    return next(
+      new AppError('You are not authorized to perform this action', 401),
+    );
+
+  await budget.deleteOne();
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
   });
 });
