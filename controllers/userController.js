@@ -5,6 +5,18 @@ const Settings = require('../models/settingsModel');
 const Record = require('../models/recordModel');
 const Budget = require('../models/budgetModel');
 
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find({});
+
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: {
+      users,
+    },
+  });
+});
+
 exports.getMe = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id);
   const settings = await Settings.find({ user: req.user.id });

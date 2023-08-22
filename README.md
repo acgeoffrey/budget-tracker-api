@@ -33,6 +33,7 @@
 - Update Budget planning.
 - Add Subscription tracking.
 - Add Google OAuth.
+- Upload documents
 
 ## Built with
 
