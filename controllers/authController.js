@@ -13,12 +13,13 @@ const signToken = (id) => {
   });
 };
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, settings, statusCode, res) => {
   const token = signToken(user.id);
+  const expiresIn = new Date(
+    Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+  );
   const cookieOptions = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
-    ),
+    expires: expiresIn,
     httpOnly: true,
   };
 
@@ -31,8 +32,10 @@ const createSendToken = (user, statusCode, res) => {
   res.status(statusCode).json({
     status: 'success',
     token,
+    expiresIn,
     data: {
       user,
+      settings,
     },
   });
 };
@@ -67,7 +70,9 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError(`Incorrect Email or Password`, 401));
   }
 
-  createSendToken(user, 200, res);
+  const settings = await Settings.findOne({ user: user.id });
+
+  createSendToken(user, settings, 200, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
