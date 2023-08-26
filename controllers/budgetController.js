@@ -134,10 +134,27 @@ exports.getCategories = catchAsync(async (req, res, next) => {
     },
   ]);
 
+  const totalStats = await Record.aggregate([
+    {
+      $match: { user: new mongoose.Types.ObjectId(req.user.id) },
+    },
+    {
+      $match: match,
+    },
+    {
+      $group: {
+        _id: { user: '$user' },
+        numRecords: { $sum: 1 },
+        totalAmount: { $sum: '$amount' },
+      },
+    },
+  ]);
+
   res.status(200).json({
     status: 'success',
     data: {
       categoryStats,
+      totalStats,
     },
   });
 });
@@ -194,6 +211,9 @@ exports.getBudget = catchAsync(async (req, res, next) => {
         numRecords: { $sum: 1 },
         totalAmount: { $sum: '$amount' },
       },
+    },
+    {
+      $addFields: { total: '$numRecords' },
     },
     {
       $sort: { totalAmount: 1 },
