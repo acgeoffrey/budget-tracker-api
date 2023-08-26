@@ -17,7 +17,10 @@ router
   .patch(budgetController.updateRecord)
   .delete(budgetController.deleteRecord);
 
-router.route('/category').get(budgetController.getCategories);
+router
+  .route('/category')
+  .get(budgetController.getCategories)
+  .post(budgetController.getCategories);
 
 router
   .route('/planner')

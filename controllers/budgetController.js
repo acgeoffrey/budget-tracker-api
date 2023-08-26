@@ -113,7 +113,7 @@ exports.getCategories = catchAsync(async (req, res, next) => {
     };
   }
 
-  // console.log(match);
+  console.log(match);
 
   const categoryStats = await Record.aggregate([
     {
@@ -134,6 +134,8 @@ exports.getCategories = catchAsync(async (req, res, next) => {
     },
   ]);
 
+  delete match.recordType;
+
   const totalStats = await Record.aggregate([
     {
       $match: { user: new mongoose.Types.ObjectId(req.user.id) },
@@ -143,7 +145,7 @@ exports.getCategories = catchAsync(async (req, res, next) => {
     },
     {
       $group: {
-        _id: { user: '$user' },
+        _id: { $toUpper: '$recordType' },
         numRecords: { $sum: 1 },
         totalAmount: { $sum: '$amount' },
       },
