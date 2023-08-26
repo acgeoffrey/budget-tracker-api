@@ -113,7 +113,7 @@ exports.getCategories = catchAsync(async (req, res, next) => {
     };
   }
 
-  console.log(match);
+  // console.log(match);
 
   const categoryStats = await Record.aggregate([
     {
@@ -130,7 +130,7 @@ exports.getCategories = catchAsync(async (req, res, next) => {
       },
     },
     {
-      $sort: { totalAmount: 1 },
+      $sort: { totalAmount: -1 },
     },
   ]);
 
