@@ -102,7 +102,7 @@ exports.getDatewiseData = catchAsync(async (req, res, next) => {
   const { startDate, endDate } = req.body;
 
   if (!startDate || !endDate)
-    return next(new AppError('Required Fields missing', 403));
+    return next(new AppError('Required Fields missing', 400));
 
   const data = await Record.aggregate([
     {
@@ -118,7 +118,7 @@ exports.getDatewiseData = catchAsync(async (req, res, next) => {
       $group: {
         _id: { $dateToString: { format: '%Y-%m-%d', date: '$date' } },
         numRecords: { $sum: 1 },
-        totalAmount: { $sum: '$amount' },
+        totalExpenses: { $sum: '$amount' },
       },
     },
     {
