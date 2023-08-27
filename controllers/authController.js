@@ -141,7 +141,12 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   //   'host',
   // )}/api/v1/user/resetPassword/${resetToken}`;
 
-  const resetURL = `${process.env.FRONTEND_URL_DEV}/${resetToken}`;
+  let resetURL;
+  if (process.env.NODE_ENV === 'production') {
+    resetURL = `${process.env.FRONTEND_URL_DEV}/${resetToken}`;
+  } else {
+    resetURL = `${process.env.FRONTEND_URL_PROD}/${resetToken}`;
+  }
 
   const message = `Here is your password reset link. Submit a patch request with your new password to: ${resetURL}.\n
   If you didn't request this action, please ignore this email.`;
