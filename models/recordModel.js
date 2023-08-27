@@ -24,7 +24,7 @@ const recordSchema = new mongoose.Schema(
       type: String,
       lowercase: true,
       trim: true,
-      default: 'others',
+      default: 'other',
     },
     notes: {
       type: String,

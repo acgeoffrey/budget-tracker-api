@@ -22,6 +22,8 @@ router
   .get(budgetController.getCategories)
   .post(budgetController.getCategories);
 
+router.route('/date').post(budgetController.getDatewiseData);
+
 router
   .route('/planner')
   .get(budgetController.getAllBudgets)

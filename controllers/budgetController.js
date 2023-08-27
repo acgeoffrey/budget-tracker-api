@@ -98,6 +98,42 @@ exports.deleteRecord = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getDatewiseData = catchAsync(async (req, res, next) => {
+  const { startDate, endDate } = req.body;
+
+  if (!startDate || !endDate)
+    return next(new AppError('Required Fields missing', 403));
+
+  const data = await Record.aggregate([
+    {
+      $match: { user: new mongoose.Types.ObjectId(req.user.id) },
+    },
+    {
+      $match: {
+        date: { $gte: new Date(startDate), $lte: new Date(endDate) },
+        recordType: { $eq: 'expense' },
+      },
+    },
+    {
+      $group: {
+        _id: { $dateToString: { format: '%Y-%m-%d', date: '$date' } },
+        numRecords: { $sum: 1 },
+        totalAmount: { $sum: '$amount' },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      dateWiseExpenses: data,
+    },
+  });
+});
+
 exports.getCategories = catchAsync(async (req, res, next) => {
   const { startDate, endDate } = req.body;
   const endDateISO = new Date(endDate);
