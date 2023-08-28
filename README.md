@@ -12,7 +12,7 @@
 
 ## Links
 
-- [Live API URL](https://api-coinchef.cyclic.cloud/)
+- [Live API URL](https://coinchef.cyclic.cloud/)
 - [Postman Documentation](https://documenter.getpostman.com/view/26849144/2s9Y5SWRGR)
 
 ## Overview
