@@ -71,7 +71,7 @@ exports.updateRecord = catchAsync(async (req, res, next) => {
     runValidators: true,
   });
 
-  res.status(201).json({
+  res.status(200).json({
     status: 'success',
     message: 'Record updated successfully.',
   });
