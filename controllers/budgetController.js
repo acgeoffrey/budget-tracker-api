@@ -5,6 +5,26 @@ const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/AppError');
 
+async function getTotalStats(user, startDate, endDate) {
+  return await Record.aggregate([
+    {
+      $match: { user: new mongoose.Types.ObjectId(user) },
+    },
+    {
+      $match: {
+        date: { $gte: new Date(startDate), $lte: new Date(endDate) },
+      },
+    },
+    {
+      $group: {
+        _id: { $toUpper: '$recordType' },
+        numRecords: { $sum: 1 },
+        totalAmount: { $sum: '$amount' },
+      },
+    },
+  ]);
+}
+
 exports.getAllRecords = catchAsync(async (req, res, next) => {
   // Query
   const apiFeatures = new APIFeatures(Record.find(), req.query, req.user)
@@ -126,10 +146,13 @@ exports.getDatewiseData = catchAsync(async (req, res, next) => {
     },
   ]);
 
+  const totalStats = await getTotalStats(req.user.id, startDate, endDate);
+
   res.status(200).json({
     status: 'success',
     data: {
       dateWiseExpenses: data,
+      totalStats,
     },
   });
 });
@@ -172,21 +195,7 @@ exports.getCategories = catchAsync(async (req, res, next) => {
 
   delete match.recordType;
 
-  const totalStats = await Record.aggregate([
-    {
-      $match: { user: new mongoose.Types.ObjectId(req.user.id) },
-    },
-    {
-      $match: match,
-    },
-    {
-      $group: {
-        _id: { $toUpper: '$recordType' },
-        numRecords: { $sum: 1 },
-        totalAmount: { $sum: '$amount' },
-      },
-    },
-  ]);
+  const totalStats = await getTotalStats(req.user.id, startDate, endDateISO);
 
   res.status(200).json({
     status: 'success',
