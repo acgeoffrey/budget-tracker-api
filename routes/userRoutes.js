@@ -24,6 +24,9 @@ router
   .patch(userController.updateMe)
   .delete(userController.deleteMe);
 
-router.route('/settings').patch(userController.updateUserSettings);
+router
+  .route('/settings')
+  .patch(userController.updateUserSettings)
+  .delete(userController.deleteTags);
 
 module.exports = router;

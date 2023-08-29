@@ -19,7 +19,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 
 exports.getMe = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id);
-  const settings = await Settings.find({ user: req.user.id });
+  const settings = await Settings.findOne({ user: req.user.id });
 
   res.status(200).json({
     status: 'success',
@@ -88,5 +88,25 @@ exports.updateUserSettings = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     message: 'Settings updated.',
+  });
+});
+
+exports.deleteTags = catchAsync(async (req, res, next) => {
+  const settings = await Settings.findOne({ user: req.user.id });
+
+  if (req.body.expenseCategories)
+    settings.expenseCategories = settings.expenseCategories.filter(
+      (tag) => tag !== req.body.expenseCategories,
+    );
+  if (req.body.incomeCategories)
+    settings.incomeCategories = settings.incomeCategories.filter(
+      (tag) => tag !== req.body.incomeCategories,
+    );
+
+  await settings.save();
+
+  res.status(204).json({
+    status: 'success',
+    message: 'Tag deleted.',
   });
 });
